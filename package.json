@@ -4,7 +4,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "start": "esr src/server.ts"
+    "start": "esr src/server.ts",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w"
   },
   "dependencies": {
     "esbuild-runner": "2.2.1",
