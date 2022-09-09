@@ -17,6 +17,10 @@ app.get('/:ip/country', async (req, res) => {
 
   try {
     const response = await locationService.GetCountry(address)
+    if (!response) {
+      res.sendStatus(404)
+      return
+    }
     res.status(200).contentType('text/plain').send(response)
   } catch (e) {
     if (e instanceof RateLimitError) {
