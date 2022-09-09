@@ -1,6 +1,7 @@
 import express from 'express'
 import {RateLimitError} from "./decorators/ratelimit"
 import {IPInfoService} from "./services/IPInfoService/IPInfoService";
+import {IPNotFoundError} from "./services/IPInfoService";
 
 const app = express()
 
@@ -17,13 +18,11 @@ app.get('/:ip/country', async (req, res) => {
 
   try {
     const response = await locationService.GetCountry(address)
-    if (!response) {
-      res.sendStatus(404)
-      return
-    }
     res.status(200).contentType('text/plain').send(response)
   } catch (e) {
-    if (e instanceof RateLimitError) {
+    if (e instanceof IPNotFoundError) {
+      res.sendStatus(404)
+    } else if (e instanceof RateLimitError) {
       res.sendStatus(503)
     } else if (e instanceof Error) {
       res.sendStatus(500)
